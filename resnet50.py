@@ -18,7 +18,7 @@ parser = argparse.ArgumentParser(description='COVID-19 Detection from X-ray Imag
 parser.add_argument('--batch_size', type=int, default=20,
                     help='input batch size for training (default: 20)')
 parser.add_argument('--epochs', type=int, default=100,
-                    help='number of epochs to train (default: 100)')
+                    help='number of epochs to train (default: 50)')
 parser.add_argument('--num_workers', type=int, default=0,
                     help='number of workers to train (default: 0)')
 parser.add_argument('--learning_rate', type=float, default=0.0001,
