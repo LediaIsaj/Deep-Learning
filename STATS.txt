@@ -1,0 +1,8 @@
+DENSENET
+
+val Loss: 0.1537 Acc: 0.9677 
+
+
+Training complete in 23m 55s
+Best val Acc= 0.968 at Epoch: 0
+total_time tranfer learning= 1435.8465178012848

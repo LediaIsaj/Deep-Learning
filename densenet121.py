@@ -32,6 +32,7 @@ args = parser.parse_args()
 
 start_time = time.time()
 
+#stats same as ImageNet
 data_transforms = {
     'train': transforms.Compose([
         transforms.Resize(224),
@@ -57,13 +58,14 @@ dataloaders = {x: torch.utils.data.DataLoader(image_datasets[x], batch_size=args
                                               shuffle=True, num_workers=args.num_workers)
                for x in ['train', 'val']}
 dataset_sizes = {x: len(image_datasets[x]) for x in ['train', 'val']}
-class_names = image_datasets['train'].classes  # 0: child, and 1: nonchild  ?? covid and non-covid??
+class_names = image_datasets['train'].classes  
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 
 def imshow(inp, title=None):
     """Imshow for Tensor."""
+    #image is currently tensor, changes to convert back
     inp = inp.numpy().transpose((1, 2, 0))
     mean = np.array([0.485, 0.456, 0.406])
     std = np.array([0.229, 0.224, 0.225])
@@ -219,3 +221,5 @@ if __name__ == "__main__":
 
 end_time = time.time()
 print("total_time tranfer learning=", end_time - start_time)
+
+
