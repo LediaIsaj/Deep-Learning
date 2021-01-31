@@ -13,6 +13,9 @@ from torchvision import datasets, models, transforms
 import matplotlib.pyplot as plt
 import copy, pickle, os, time
 import argparse
+import seaborn as sns
+import pandas as pd
+from torch.utils.data import Dataset, DataLoader, random_split, SubsetRandomSampler, WeightedRandomSampler
 
 parser = argparse.ArgumentParser(description='COVID-19 Detection from X-ray Images')
 parser.add_argument('--batch_size', type=int, default=2,
@@ -54,9 +57,55 @@ data_dir = args.dataset_path
 image_datasets = {x: datasets.ImageFolder(os.path.join(data_dir, x),
                                           data_transforms[x])
                   for x in ['train', 'val']}
-dataloaders = {x: torch.utils.data.DataLoader(image_datasets[x], batch_size=args.batch_size,
+
+
+# check distributions to handle unbalanced data
+idx2class = {v: k for k, v in image_datasets['train'].class_to_idx.items()}
+
+def get_class_distribution(dataset_obj):
+    count_dict = {k:0 for k,v in dataset_obj.class_to_idx.items()}
+    
+    for element in dataset_obj:
+        y_lbl = element[1]
+        y_lbl = idx2class[y_lbl]
+        count_dict[y_lbl] += 1
+            
+    return count_dict
+
+print("Distribution of classes: \n", get_class_distribution(image_datasets['train']))
+
+
+def show_distributions(data = image_datasets['train']):
+    plt.figure(figsize=(15,8))
+    sns.barplot(data = pd.DataFrame.from_dict([get_class_distribution(data)]).melt(), x = "variable", y="value", hue="variable").set_title('Class Distribution')
+
+show_distributions(image_datasets['train'])
+
+target_list = torch.tensor(image_datasets['train'].targets)
+
+target_list = target_list[torch.randperm(len(target_list))]
+
+class_count = [i for i in get_class_distribution(image_datasets['train']).values()]
+class_weights = 1./torch.tensor(class_count, dtype=torch.float)
+
+print(class_weights)
+
+class_weights_all = class_weights[target_list]
+weighted_sampler = WeightedRandomSampler(
+    weights=class_weights_all,
+    num_samples=len(class_weights_all),
+    replacement=True
+)
+
+train_loader = torch.utils.data.DataLoader(image_datasets['train'], batch_size=args.batch_size,
+                                              shuffle=False, num_workers=args.num_workers,
+                                              sampler=weighted_sampler)
+val_loader = torch.utils.data.DataLoader(image_datasets['val'], batch_size=args.batch_size,
                                               shuffle=True, num_workers=args.num_workers)
-               for x in ['train', 'val']}
+
+dataloaders = {'train':train_loader, 'val':val_loader}
+
+
 dataset_sizes = {x: len(image_datasets[x]) for x in ['train', 'val']}
 class_names = image_datasets['train'].classes  
 
@@ -189,6 +238,7 @@ def visualize_model(model, num_images=64):
                     model.train(mode=was_training)
                     return
         model.train(mode=was_training)
+
 
 
 #### load model
