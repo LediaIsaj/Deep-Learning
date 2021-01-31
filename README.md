@@ -37,3 +37,24 @@ Given the path for the test samples, the inference code provides the predicted s
 python Inference.py --test_covid_path ./data/val/covid/ --test_non_covid_path ./data/val/non/ --trained_model_path ./results/resnet18/epoch10/covid_resnet18_epoch10.pt --cut_off_threshold 0.2 --batch_size 20 --num_workers 0
 ```
 
+### Results
+
+#### ResNet18
+![Alt](/results/resnet18/epoch10/scores_histogram.png "The predicted probability scores on the test set by ResNet18")
+![Alt](/results/resnet18/epoch10/ROC_covid19.png "ROC ResNet18")
+![Alt](/results/resnet18/epoch10/cm_squeezenet.png "Confusion Matrix ResNet18")
+
+#### ResNet50
+![Alt](/results/resnet50/epoch10/scores_histogram.png "The predicted probability scores on the test set by ResNet50")
+![Alt](/results/resnet50/epoch10/ROC_covid19.png "ROC ResNet50")
+![Alt](/results/resnet50/epoch10/cm_squeezenet.png "Confusion Matrix ResNet50")
+
+#### SqueezeNet
+![Alt](/results/squeezenet/epoch10/scores_histogram.png "The predicted probability scores on the test set by SqueezeNet")
+![Alt](/results/squeezenet/epoch10/ROC_covid19.png "ROC SqueezeNet")
+![Alt](/results/squeezenet/epoch10/cm_squeezenet.png "Confusion Matrix SqueezeNet")
+
+#### DesneNet-121
+![Alt](/results/desnenet/epoch10/scores_histogram.png "The predicted probability scores on the test set by DesneNet-121")
+![Alt](/results/desnenet/epoch10/ROC_covid19.png "ROC DesneNet-121")
+![Alt](/results/desnenet/epoch10/cm_squeezenet.png "Confusion Matrix DesneNet-121")
