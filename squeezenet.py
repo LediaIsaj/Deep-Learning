@@ -15,7 +15,7 @@ import argparse
 parser = argparse.ArgumentParser(description='COVID-19 Detection from X-ray Images')
 parser.add_argument('--batch_size', type=int, default=20,
                     help='input batch size for training (default: 20)')
-parser.add_argument('--epochs', type=int, default=100,
+parser.add_argument('--epochs', type=int, default=3,
                     help='number of epochs to train (default: 100)')
 parser.add_argument('--num_workers', type=int, default=0,
                     help='number of workers to train (default: 0)')
@@ -48,12 +48,37 @@ data_transforms = {
 
 data_dir = args.dataset_path
 
+def make_weights_for_balanced_classes(images, nclasses):                        
+    count = [0] * nclasses                                                      
+    for item in images:                                                         
+        count[item[1]] += 1                                                     
+    weight_per_class = [0.] * nclasses                                      
+    N = float(sum(count))                                                   
+    for i in range(nclasses):                                                   
+        weight_per_class[i] = N/float(count[i])                                 
+    weight = [0] * len(images)                                              
+    for idx, val in enumerate(images):                                          
+        weight[idx] = weight_per_class[val[1]]                                  
+    return weight    
 image_datasets = {x: datasets.ImageFolder(os.path.join(data_dir, x),
                                           data_transforms[x])
                   for x in ['train', 'val']}
-dataloaders = {x: torch.utils.data.DataLoader(image_datasets[x], batch_size=args.batch_size,
-                                              shuffle=True, num_workers=args.num_workers)
-               for x in ['train', 'val']}
+weights = make_weights_for_balanced_classes(image_datasets['train'].imgs, len(image_datasets['train'].classes))                                                                
+weights = torch.DoubleTensor(weights)                                       
+sampler = torch.utils.data.sampler.WeightedRandomSampler(weights, len(weights))                     
+                                                                                
+train_loader = torch.utils.data.DataLoader(image_datasets['train'], batch_size=args.batch_size, shuffle = False,                              
+                                                             sampler = sampler, num_workers=args.num_workers, pin_memory=True)   
+
+weights_val = make_weights_for_balanced_classes(image_datasets['val'].imgs, len(image_datasets['val'].classes))                                                                
+weights_val = torch.DoubleTensor(weights_val)                                       
+sampler_val = torch.utils.data.sampler.WeightedRandomSampler(weights_val, len(weights_val))  
+
+val_loader = torch.utils.data.DataLoader(image_datasets['val'], batch_size=args.batch_size, shuffle = False,                              
+                                                             sampler = sampler_val, num_workers=args.num_workers, pin_memory=True)   
+
+dataloaders = {'train':train_loader, 'val':val_loader}
+
 dataset_sizes = {x: len(image_datasets[x]) for x in ['train', 'val']}
 class_names = image_datasets['train'].classes  # 0: child, and 1: nonchild  ?? covid and non-covid??
 
