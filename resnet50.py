@@ -20,7 +20,7 @@ from torch.utils.data import Dataset, DataLoader, random_split, SubsetRandomSamp
 parser = argparse.ArgumentParser(description='COVID-19 Detection from X-ray Images')
 parser.add_argument('--batch_size', type=int, default=20,
                     help='input batch size for training (default: 20)')
-parser.add_argument('--epochs', type=int, default=2,
+parser.add_argument('--epochs', type=int, default=10,
                     help='number of epochs to train (default: 50)')
 parser.add_argument('--num_workers', type=int, default=0,
                     help='number of workers to train (default: 0)')

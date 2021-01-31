@@ -197,6 +197,7 @@ y_pred_res18= [covid_prob[i] for i in range(len(covid_prob))]+[non_prob[i] for i
 
            
 auc_res18 = roc_auc_score(y_test_res18, y_pred_res18)
+auc_res18.to_csv("roc_data")
 ns_fpr_res18, ns_tpr_res18, _ = roc_curve(y_test_res18, y_pred_res18)
 
 plt.figure()
