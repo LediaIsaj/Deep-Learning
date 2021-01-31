@@ -21,7 +21,7 @@ from torch.utils.data import Dataset, DataLoader, random_split, SubsetRandomSamp
 parser = argparse.ArgumentParser(description='COVID-19 Detection from X-ray Images')
 parser.add_argument('--batch_size', type=int, default=20,
                     help='input batch size for training (default: 20)')
-parser.add_argument('--epochs', type=int, default=100,
+parser.add_argument('--epochs', type=int, default=2,
                     help='number of epochs to train (default: 100)')
 parser.add_argument('--num_workers', type=int, default=0,
                     help='number of workers to train (default: 0)')
@@ -54,53 +54,36 @@ data_transforms = {
 
 data_dir = args.dataset_path
 
+
+
+def make_weights_for_balanced_classes(images, nclasses):                        
+    count = [0] * nclasses                                                      
+    for item in images:                                                         
+        count[item[1]] += 1                                                     
+    weight_per_class = [0.] * nclasses                                      
+    N = float(sum(count))                                                   
+    for i in range(nclasses):                                                   
+        weight_per_class[i] = N/float(count[i])                                 
+    weight = [0] * len(images)                                              
+    for idx, val in enumerate(images):                                          
+        weight[idx] = weight_per_class[val[1]]                                  
+    return weight    
 image_datasets = {x: datasets.ImageFolder(os.path.join(data_dir, x),
                                           data_transforms[x])
                   for x in ['train', 'val']}
+weights = make_weights_for_balanced_classes(image_datasets['train'].imgs, len(image_datasets['train'].classes))                                                                
+weights = torch.DoubleTensor(weights)                                       
+sampler = torch.utils.data.sampler.WeightedRandomSampler(weights, len(weights))                     
+                                                                                
+train_loader = torch.utils.data.DataLoader(image_datasets['train'], batch_size=args.batch_size, shuffle = False,                              
+                                                             sampler = sampler, num_workers=args.num_workers, pin_memory=True)   
 
-# check distributions to handle unbalanced data
-idx2class = {v: k for k, v in image_datasets['train'].class_to_idx.items()}
+weights_val = make_weights_for_balanced_classes(image_datasets['val'].imgs, len(image_datasets['val'].classes))                                                                
+weights_val = torch.DoubleTensor(weights_val)                                       
+sampler_val = torch.utils.data.sampler.WeightedRandomSampler(weights_val, len(weights_val))  
 
-def get_class_distribution(dataset_obj):
-    count_dict = {k:0 for k,v in dataset_obj.class_to_idx.items()}
-    
-    for element in dataset_obj:
-        y_lbl = element[1]
-        y_lbl = idx2class[y_lbl]
-        count_dict[y_lbl] += 1
-            
-    return count_dict
-
-print("Distribution of classes: \n", get_class_distribution(image_datasets['train']))
-
-
-def show_distributions(data = image_datasets['train']):
-    plt.figure(figsize=(15,8))
-    sns.barplot(data = pd.DataFrame.from_dict([get_class_distribution(data)]).melt(), x = "variable", y="value", hue="variable").set_title('Class Distribution')
-
-show_distributions(image_datasets['train'])
-
-target_list = torch.tensor(image_datasets['train'].targets)
-
-target_list = target_list[torch.randperm(len(target_list))]
-
-class_count = [i for i in get_class_distribution(image_datasets['train']).values()]
-class_weights = 1./torch.tensor(class_count, dtype=torch.float)
-
-print(class_weights)
-
-class_weights_all = class_weights[target_list]
-weighted_sampler = WeightedRandomSampler(
-    weights=class_weights_all,
-    num_samples=len(class_weights_all),
-    replacement=True
-)
-
-train_loader = torch.utils.data.DataLoader(image_datasets['train'], batch_size=args.batch_size,
-                                              shuffle=False, num_workers=args.num_workers,
-                                              sampler=weighted_sampler)
-val_loader = torch.utils.data.DataLoader(image_datasets['val'], batch_size=args.batch_size,
-                                              shuffle=True, num_workers=args.num_workers)
+val_loader = torch.utils.data.DataLoader(image_datasets['val'], batch_size=args.batch_size, shuffle = False,                              
+                                                             sampler = sampler_val, num_workers=args.num_workers, pin_memory=True)   
 
 dataloaders = {'train':train_loader, 'val':val_loader}
 
