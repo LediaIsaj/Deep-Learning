@@ -1,0 +1,18 @@
+Training complete in 222m 4s
+Best val Acc= 0.971 at Epoch: 7
+total_time tranfer learning= 13325.333537817001
+
+Cut-off 0.2
+sensitivity= 0.928, specificity= 0.922
+
+Total Time: 361.55203199386597
+
+Cut-off 0.1
+sensitivity= 0.990, specificity= 0.734
+
+Total Time: 870.9636189937592
+
+Cut-off 0.3
+sensitivity= 0.976, specificity= 0.975
+
+Total Time: 897.305526971817

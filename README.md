@@ -42,12 +42,12 @@ python Inference.py --test_covid_path ./data/val/covid/ --test_non_covid_path ./
 #### ResNet18
 ![Alt](/results/resnet18/epoch10/scores_histogram.png "The predicted probability scores on the test set by ResNet18")
 ![Alt](/results/resnet18/epoch10/ROC_covid19.png "ROC ResNet18")
-![Alt](/results/resnet18/epoch10/cm_squeezenet.png "Confusion Matrix ResNet18")
+![Alt](/results/resnet18/epoch10/cm_resnet18.png "Confusion Matrix ResNet18")
 
 #### ResNet50
 ![Alt](/results/resnet50/epoch10/scores_histogram.png "The predicted probability scores on the test set by ResNet50")
 ![Alt](/results/resnet50/epoch10/ROC_covid19.png "ROC ResNet50")
-![Alt](/results/resnet50/epoch10/cm_squeezenet.png "Confusion Matrix ResNet50")
+![Alt](/results/resnet50/epoch10/cm_resnet50.png "Confusion Matrix ResNet50")
 
 #### SqueezeNet
 ![Alt](/results/squeezenet/epoch10/scores_histogram.png "The predicted probability scores on the test set by SqueezeNet")
@@ -57,4 +57,24 @@ python Inference.py --test_covid_path ./data/val/covid/ --test_non_covid_path ./
 #### DesneNet-121
 ![Alt](/results/desnenet/epoch10/scores_histogram.png "The predicted probability scores on the test set by DesneNet-121")
 ![Alt](/results/desnenet/epoch10/ROC_covid19.png "ROC DesneNet-121")
-![Alt](/results/desnenet/epoch10/cm_squeezenet.png "Confusion Matrix DesneNet-121")
+![Alt](/results/desnenet/epoch10/cm_desnenet.png "Confusion Matrix DesneNet-121")
+
+###  Cut-off threshold analysis
+
+
+|     Model   |Threshold     |Sensitivity  | Specificity         |
+|-------------|---------------|-------------|-------------|
+|ResNet18     | 0.1           |1.000        |0.398        |
+|ResNet18     | 0.2           |0.970       |0.777        |
+|ResNet18     | 0.3           |0.928        |0.922        |
+|ResNet50     | 0.1           |0.990        |value        |
+|ResNet50     | 0.2           |0.928        |0.922        |
+|ResNet50     | 0.3           |0.976        |0.975        |
+|SqueezeNet   | 0.1           |0.916        |0.955        |
+|SqueezeNet   | 0.2           |0.85        |0.979        |
+|SqueezeNet   | 0.3           |0.778        |0.990        |
+|DesneNet-121 | 0.1           |value        |value        |
+|DesneNet-121 | 0.2           |value        |value        |
+|DesneNet-121 | 0.3           |value        |value        |
+
+The models chosen are ResNet18 with cut-off = 0.3 , ResNet50 with cut-off = 0.3, SqueezeNet with cut-off = 0.1, and DesneNet-121 with cut-off = .

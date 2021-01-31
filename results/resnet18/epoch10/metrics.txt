@@ -1,0 +1,14 @@
+Cut off 0.2
+sensitivity= 0.970, specificity= 0.777
+
+Total Time: 339.8953335285187
+
+Cut off 0.1
+sensitivity= 1.000, specificity= 0.398
+
+Total Time: 354.7611963748932
+
+Cut off 0.3
+sensitivity= 0.928, specificity= 0.922
+
+Total Time: 354.6819362640381

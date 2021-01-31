@@ -27,10 +27,10 @@ parser.add_argument('--test_covid_path', type=str, default='./data/val/covid/',
                       help='COVID-19 test samples directory')
 parser.add_argument('--test_non_covid_path', type=str, default='./data/val/non/',
                       help='Non-COVID test samples directory')
-parser.add_argument('--trained_model_path', type=str, default='./results/resnet18/epoch2/covid_resnet18_epoch2.pt',
+parser.add_argument('--trained_model_path', type=str, default='./results/squeezenet/epoch10/covid_squezeenet_epoch10.pt',
                       help='The path and name of trained model')
 
-parser.add_argument('--cut_off_threshold', type=float, default= 0.2, 
+parser.add_argument('--cut_off_threshold', type=float, default= 0.3, 
                     help='cut-off threshold. Any sample with probability higher than this is considered COVID-19 (default: 0.2)')
 parser.add_argument('--batch_size', type=int, default=20, 
                     help='input batch size for training (default: 20)')
@@ -197,7 +197,7 @@ y_pred_res18= [covid_prob[i] for i in range(len(covid_prob))]+[non_prob[i] for i
 
            
 auc_res18 = roc_auc_score(y_test_res18, y_pred_res18)
-auc_res18.to_csv("roc_data")
+
 ns_fpr_res18, ns_tpr_res18, _ = roc_curve(y_test_res18, y_pred_res18)
 
 plt.figure()
