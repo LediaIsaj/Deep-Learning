@@ -48,6 +48,8 @@ data_transforms = {
 
 data_dir = args.dataset_path
 
+
+
 def make_weights_for_balanced_classes(images, nclasses):                        
     count = [0] * nclasses                                                      
     for item in images:                                                         
@@ -70,15 +72,11 @@ sampler = torch.utils.data.sampler.WeightedRandomSampler(weights, len(weights))
 train_loader = torch.utils.data.DataLoader(image_datasets['train'], batch_size=args.batch_size, shuffle = False,                              
                                                              sampler = sampler, num_workers=args.num_workers, pin_memory=True)   
 
-weights_val = make_weights_for_balanced_classes(image_datasets['val'].imgs, len(image_datasets['val'].classes))                                                                
-weights_val = torch.DoubleTensor(weights_val)                                       
-sampler_val = torch.utils.data.sampler.WeightedRandomSampler(weights_val, len(weights_val))  
 
-val_loader = torch.utils.data.DataLoader(image_datasets['val'], batch_size=args.batch_size, shuffle = False,                              
-                                                             sampler = sampler_val, num_workers=args.num_workers, pin_memory=True)   
+val_loader = torch.utils.data.DataLoader(image_datasets['val'], batch_size=args.batch_size, shuffle = True,                              
+                                                              num_workers=args.num_workers, pin_memory=True)   
 
 dataloaders = {'train':train_loader, 'val':val_loader}
-
 dataset_sizes = {x: len(image_datasets[x]) for x in ['train', 'val']}
 class_names = image_datasets['train'].classes  # 0: child, and 1: nonchild  ?? covid and non-covid??
 

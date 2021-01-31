@@ -1,0 +1,6 @@
+Best val Acc= 0.936 at Epoch: 1
+total_time tranfer learning= 1045.9181747436523
+
+sensitivity= 0.996, specificity= 0.613
+
+Total Time: 385.44797348976135

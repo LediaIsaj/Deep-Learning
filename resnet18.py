@@ -78,12 +78,9 @@ sampler = torch.utils.data.sampler.WeightedRandomSampler(weights, len(weights))
 train_loader = torch.utils.data.DataLoader(image_datasets['train'], batch_size=args.batch_size, shuffle = False,                              
                                                              sampler = sampler, num_workers=args.num_workers, pin_memory=True)   
 
-weights_val = make_weights_for_balanced_classes(image_datasets['val'].imgs, len(image_datasets['val'].classes))                                                                
-weights_val = torch.DoubleTensor(weights_val)                                       
-sampler_val = torch.utils.data.sampler.WeightedRandomSampler(weights_val, len(weights_val))  
 
-val_loader = torch.utils.data.DataLoader(image_datasets['val'], batch_size=args.batch_size, shuffle = False,                              
-                                                             sampler = sampler_val, num_workers=args.num_workers, pin_memory=True)   
+val_loader = torch.utils.data.DataLoader(image_datasets['val'], batch_size=args.batch_size, shuffle = True,                              
+                                                              num_workers=args.num_workers, pin_memory=True)   
 
 dataloaders = {'train':train_loader, 'val':val_loader}
 
@@ -107,7 +104,7 @@ def imshow(inp, title=None):
     plt.pause(0.001)  # pause a bit so that plots are updated
 
 
-def train_model(model, criterion, optimizer, scheduler, batch_szie, num_epochs=20):
+def train_model(model, criterion, optimizer, scheduler, batch_szie, num_epochs=1):
     since = time.time()
 
     best_model_wts = copy.deepcopy(model.state_dict())
