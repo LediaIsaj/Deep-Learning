@@ -57,7 +57,7 @@ python Inference.py --test_covid_path ./data/val/covid/ --test_non_covid_path ./
 #### DesneNet-121
 ![Alt](/results/desnenet/epoch10/scores_histogram.png "The predicted probability scores on the test set by DesneNet-121")
 ![Alt](/results/desnenet/epoch10/ROC_covid19.png "ROC DesneNet-121")
-![Alt](/results/desnenet/epoch10/cm_desnenet.png "Confusion Matrix DesneNet-121")
+![Alt](/results/desnenet/epoch10/confusion_matrix_d.png "Confusion Matrix DesneNet-121")
 
 ###  Cut-off threshold analysis
 
