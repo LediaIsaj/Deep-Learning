@@ -27,7 +27,7 @@ parser.add_argument('--test_covid_path', type=str, default='./data/val/covid/',
                       help='COVID-19 test samples directory')
 parser.add_argument('--test_non_covid_path', type=str, default='./data/val/non/',
                       help='Non-COVID test samples directory')
-parser.add_argument('--trained_model_path', type=str, default='./results/squeezenet/epoch10/covid_squezeenet_epoch10.pt',
+parser.add_argument('--trained_model_path', type=str, default='./results/desnenet/epoch10/covid_densenet121_epoch10.pt',
                       help='The path and name of trained model')
 
 parser.add_argument('--cut_off_threshold', type=float, default= 0.3, 

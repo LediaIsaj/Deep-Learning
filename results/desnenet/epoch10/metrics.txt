@@ -1,0 +1,11 @@
+Cut-off = 0.2
+sensitivity= 0.990, specificity= 0.693
+
+Total Time: 836.1329064369202
+
+Cut-off = 0.1
+sensitivity= 1.000, specificity= 0.283
+
+Total Time: 833.0472865104675
+
+Cut-off = 0.3

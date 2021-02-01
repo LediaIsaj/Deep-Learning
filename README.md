@@ -62,20 +62,20 @@ python Inference.py --test_covid_path ./data/val/covid/ --test_non_covid_path ./
 ###  Cut-off threshold analysis
 
 
-|     Model   |Threshold     |Sensitivity  | Specificity         |
+|     Model   |Threshold      |Sensitivity  | Specificity |
 |-------------|---------------|-------------|-------------|
 |ResNet18     | 0.1           |1.000        |0.398        |
-|ResNet18     | 0.2           |0.970       |0.777        |
+|ResNet18     | 0.2           |0.970        |0.777        |
 |ResNet18     | 0.3           |0.928        |0.922        |
 |ResNet50     | 0.1           |0.990        |value        |
 |ResNet50     | 0.2           |0.928        |0.922        |
 |ResNet50     | 0.3           |0.976        |0.975        |
 |SqueezeNet   | 0.1           |0.916        |0.955        |
-|SqueezeNet   | 0.2           |0.85        |0.979        |
+|SqueezeNet   | 0.2           |0.85         |0.979        |
 |SqueezeNet   | 0.3           |0.778        |0.990        |
-|DesneNet-121 | 0.1           |value        |value        |
-|DesneNet-121 | 0.2           |value        |value        |
-|DesneNet-121 | 0.3           |value        |value        |
+|DesneNet-121 | 0.1           |1.000      	|0.283  	  |
+|DesneNet-121 | 0.2           |0.990        |0.693        |
+|DesneNet-121 | 0.3           |0.966        |0.882        |
 
 The models chosen are ResNet18 with cut-off = 0.3 , ResNet50 with cut-off = 0.3, SqueezeNet with cut-off = 0.1, and DesneNet-121 with cut-off = .
 
@@ -85,10 +85,12 @@ ResNet18: Cut-off = 0.3, Sensitivity = 0.928, Specificity = 0.922
 
 ResNet50: Cut-off = 0.3, Sensitivity = 0.976, Specificity = 0.975
 ![Alt](/results/resnet50/epoch10/cm_resnet50_03.png "Confusion Matrix ResNet50")
+
 SqueezeNet: Cut-off = 0.1, Sensitivity = 0.916, Specificity = 0.955
 ![Alt](/results/squeezenet/epoch10/cm_s01.png "Confusion Matrix SqueezeNet")
-DesneNet-121: Cut-off = 0.1, Sensitivity = 0.916, Specificity = 0.955
-![Alt](/results/squeezenet/epoch10/cm_s01.png "Confusion Matrix SqueezeNet")
+
+DesneNet-121: Cut-off = 0.3, Sensitivity = 0.966, Specificity = 0.882
+![Alt](/results/desnenet/epoch10/cm_d03.png "Confusion Matrix SqueezeNet")
 
 ## Limitation
 Experiments were obtained on the very limited dataset, even though they showed good performance.
